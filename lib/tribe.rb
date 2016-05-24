@@ -5,11 +5,13 @@ class Tribe
 	def initialize(options)
 		@name = options[:name]
 		@members = options[:members]
-		puts "Tribe #{@name} has members: #{@members}"
+		puts "Tribe #{@name.yellow} has members: #{@members.join(',')}"
 	end
 
 	def tribal_council(options)
-		@members.select { |m| m != options[:immune]  }.sample
+		to_delete = @members.select { |m| m != options[:immune]  }.sample
+		puts "sorry, #{to_delete.to_s.red}."
+		@members.delete(to_delete)
 	end
 
 	def to_s
