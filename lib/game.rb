@@ -24,15 +24,12 @@ class Game
 		immune = @tribes[0].members.sample
 		puts
 		puts "#{immune.to_s.green} won the individual immunity challenge and is safe from elemination."
-		to_delete = @tribes[0].members.select {|e| e != immune}.sample
-		puts "#{to_delete.to_s.red} was voted off the island."
-		@tribes[0].members.delete(to_delete)
-		puts "Remaining tribemates on #{@tribes[0].to_s.yellow} are: #{@tribes[0].members.join(',')}"
-		to_delete
+		@tribes[0].tribal_council(:immune => immune)
+		# puts "Remaining tribemates on #{@tribes[0].to_s.yellow} are: #{@tribes[0].members.join(',')}"
 	end
 
 	def merge(tribe_name)
-		new_tribe = Tribe.new(:name => tribe_name, :members => @tribes.map { |e| e.members  }.flatten)
+		new_tribe = Tribe.new(:name => tribe_name, :members => @tribes.map { |tribe| tribe.members  }.flatten)
 		clear_tribes
 		add_tribe(new_tribe)
 		new_tribe

@@ -13,22 +13,22 @@ class Jury
 	end
 
 	def cast_votes(finalists)
-		votes = {}
-		members.each do |m|
+		votes = finalists.map { |finalist| [finalist, 0] }.to_h
+		members.each do |member|
 			to_vote = finalists.sample
-			puts "#{m} cast their vote for #{to_vote}"
-			votes[to_vote] = if votes.has_key? to_vote then votes[to_vote] + 1 else 1 end
+			puts "#{member} cast their vote for #{to_vote}"
+			votes[to_vote] = votes[to_vote] + 1
 		end
 		
 		votes
 	end
 
 	def report_votes(final_votes)
-		final_votes.each { |k, v| puts "#{k} receives #{v} votes."  }
+		final_votes.each { |key, value| puts "#{key} receives #{value} votes."  }
 	end
 
 	def announce_winner(final_votes)
-		winner = final_votes.select { |k, v| v >= 4  }.keys.first
+		winner = final_votes.max_by { |member, votes| votes}[0]
 		puts
 		puts "The winner is #{winner}!.".blue
 		winner
